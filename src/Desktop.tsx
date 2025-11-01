@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import Particles from "./Particles";
 import { Button } from "./buttons";
 import { Card, CardContent } from "./card";
 import { ArrowRight, Mail, Phone, ExternalLink } from "lucide-react";
 
 const navigationItems = [
-  { label: "Home", href: "#" },
-  { label: "Projects", href: "#projects" },
+  { label: "Home", href: "#/" },
+  { label: "Projects", href: "#/projects" },
   { label: "Events", href: "#events" },
   { label: "Blogs", href: "#blogs" },
   { label: "Gallery", href: "#gallery" },
@@ -17,8 +18,8 @@ const blogPosts = [
     title: "Top Robotics Trends in 2025: What’s Changing and What to Expect",
     description:
       "Remember Wall-E, Jarvis, and Baymax? Well, that isn’t just movie magic anymore, it’s happening right now. In 2025, robots design buildings, pick crops, assist in hospitals, and hold conversations that surprise you. The robotics world is changing quickly. It’s tough to keep up with advances in AI, humanoid robots, eco-friendly designs, and automation. These innovations are impacting nearly every industry.",
-    gradient: "from-purple-500 to-pink-500",
-    // example remote image — replace with local import if you add images to the repo
+  gradient: "from-blue-500 to-cyan-500",
+    
     image:
       "../public/blog_image_3.png",
     href: "https://medium.com/@acm.sigbed/top-robotics-trends-in-2025-whats-changing-and-what-to-expect-aed5be1981bb"
@@ -36,7 +37,7 @@ const blogPosts = [
     title: "Exploring Robotics Dynamics and Kinematics: The Mechanics of Movement",
     description:
       "Robotics is a fusion of engineering, computer science, and mathematics, focusing on the study of machine movement in relation to its environment. At the heart of robotics are two fundamental fields: dynamics and kinematics. This blog delves deeper into these concepts, shedding light on their significance and applications in the robotics world.",
-    gradient: "from-pink-500 to-orange-500",
+  gradient: "from-cyan-400 to-blue-400",
     image:
       "../public/blog_image_1.png",
     href:"https://medium.com/@acm.sigbed/exploring-robotics-dynamics-and-kinematics-the-mechanics-of-movement-38975f635b05"
@@ -110,10 +111,10 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
 
   return (
     <Card
-      className="bg-gradient-to-br from-gray-900/90 to-black/90 border-purple-500/30 backdrop-blur-xl hover:border-purple-400/60 hover:shadow-2xl hover:shadow-purple-500/20 hover:scale-[1.02] hover:-translate-y-2 transition-all duration-300 group overflow-hidden"
+      className="bg-gradient-to-br from-gray-900/90 to-black/90 border-blue-400/30 backdrop-blur-xl hover:border-blue-300/60 hover:shadow-2xl hover:shadow-blue-400/20 hover:scale-[1.02] hover:-translate-y-2 transition-all duration-300 group overflow-hidden"
     >
       <CardContent className="p-0">
-        <div className="h-48 bg-gradient-to-br from-purple-600/20 to-pink-600/20 flex items-center justify-center text-8xl rounded-t-lg overflow-hidden">
+  <div className="h-48 bg-gradient-to-br from-blue-600/20 to-white/10 flex items-center justify-center text-8xl rounded-t-lg overflow-hidden">
           {project.image ? (
             <img 
               src={project.image} 
@@ -124,7 +125,7 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
         </div>
         
         <div className="p-6">
-          <h3 className="text-xl font-bold text-pink-400 mb-3 group-hover:text-pink-300 transition-colors">
+          <h3 className="text-xl font-bold text-blue-300 mb-3 group-hover:text-blue-200 transition-colors">
             {project.title}
           </h3>
           <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-sm leading-relaxed">
@@ -133,7 +134,7 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
           {project.description.length > 80 && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="text-purple-400 hover:text-purple-300 text-sm font-semibold mt-2 transition-colors"
+              className="text-blue-400 hover:text-blue-300 text-sm font-semibold mt-2 transition-colors"
             >
               {isExpanded ? "Read less" : "Read more"}
             </button>
@@ -145,6 +146,119 @@ const ProjectCard = ({ project }: { project: typeof projects[0] }) => {
 };
 
 export const Desktop = (): JSX.Element => {
+
+  // when the Desktop mounts ensure we're scrolled to top if route is home
+  useEffect(() => {
+    if (window.location.hash === "#/") {
+      window.scrollTo({ top: 0 });
+    }
+  }, []);
+
+  // headline reveal + rotating tagline + subtle parallax
+  const [mounted, setMounted] = useState(false);
+  const taglines = [
+    "Empowering Innovation at the Nexus of Intelligence and Integration",
+    "Where Embedded Systems Redefine Possibilities",
+    "Learn · Build · Collaborate",
+  ];
+  const [tagIndex, setTagIndex] = useState(0);
+  const heroRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // kick off headline reveal and tagline rotation
+    setMounted(true);
+    const iv = setInterval(() => setTagIndex((s) => (s + 1) % taglines.length), 3500);
+    return () => clearInterval(iv);
+  }, []);
+
+  useEffect(() => {
+    // subtle parallax on scroll for the hero (desktop only)
+    let raf = 0;
+    function onScroll() {
+      if (!heroRef.current) return;
+      const y = window.scrollY || window.pageYOffset;
+      // small capped vertical shift
+      const shift = Math.min(60, y * 0.08);
+      heroRef.current.style.transform = `translate3d(0, ${shift}px, 0)`;
+    }
+
+    function loop() {
+      onScroll();
+      raf = requestAnimationFrame(loop);
+    }
+
+    if (window.innerWidth >= 768) {
+      raf = requestAnimationFrame(loop);
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+    }
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  // reveal-on-scroll for panels: fade+slide when entering viewport
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    if (!els.length) return;
+
+    // helper to perform an immediate visibility check (covers SPA navigation)
+    const checkVisibleNow = (elements: HTMLElement[], io?: IntersectionObserver) => {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      elements.forEach((el) => {
+        if (el.classList.contains("reveal-visible")) return;
+        const r = el.getBoundingClientRect();
+        if (r.top <= vh * 0.88) {
+          el.classList.add("reveal-visible");
+          if (io) io.unobserve(el);
+        }
+      });
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      els.forEach((el) => el.classList.add("reveal-visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            el.classList.add("reveal-visible");
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    els.forEach((el) => io.observe(el));
+
+    // run an immediate check in case elements are already in view (SPA navigation)
+    checkVisibleNow(els, io);
+
+    // also re-run check when the page hash changes (our router) or when the window loads
+    const onHash = () => checkVisibleNow(els, io);
+    const onLoad = () => checkVisibleNow(els, io);
+    window.addEventListener("hashchange", onHash);
+    window.addEventListener("load", onLoad);
+
+    // images may change layout; re-check when images load inside reveals
+    const imgHandler = (e: Event) => checkVisibleNow(els, io);
+    const imgs = Array.from(document.querySelectorAll("img"));
+    imgs.forEach((img) => img.addEventListener("load", imgHandler));
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener("hashchange", onHash);
+      window.removeEventListener("load", onLoad);
+      imgs.forEach((img) => img.removeEventListener("load", imgHandler));
+    };
+  }, []);
 
   // --- moving dots BG ---
   const DOT_COUNT = 150;
@@ -264,53 +378,16 @@ export const Desktop = (): JSX.Element => {
 
   return (
     <div className="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen overflow-x-hidden">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(161,0,255,0.1),transparent_50%)]" />
-        <div className="absolute top-0 left-0 w-full h-full">
-          {[...Array(50)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full bg-purple-500/20"
-              style={{
-                width: Math.random() * 4 + 1 + "px",
-                height: Math.random() * 4 + 1 + "px",
-                top: Math.random() * 100 + "%",
-                left: Math.random() * 100 + "%",
-                animation: `float ${Math.random() * 10 + 10}s linear infinite`,
-                animationDelay: Math.random() * 5 + "s",
-              }}
-            />
-          ))}
-        </div>
-        {/* moving white dots layer (DOM nodes updated by RAF) */}
-        <div className="absolute inset-0 z-10 pointer-events-none">
-          {Array.from({ length: DOT_COUNT }).map((_, i) => (
-            <div
-              key={i}
-              ref={(el) => (dotsRef.current[i] = el)}
-              className="absolute bg-white rounded-full"
-              style={{
-                width: "4px",
-                height: "4px",
-                transform: "translate3d(-100px,-100px,0) scale(1)",
-                opacity: 0.6,
-                willChange: "transform, opacity",
-                pointerEvents: "none",
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      <Particles />
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-purple-500/20">
+  <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20">
         <div className="w-full px-8 h-20 flex items-center">
           <div className="flex items-center gap-4 group cursor-pointer mr-auto">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center transform group-hover:scale-110 transition-transform">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
               <span className="text-2xl font-bold">S</span>
             </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
               MUJ ACM SIGBED
             </h1>
           </div>
@@ -320,48 +397,70 @@ export const Desktop = (): JSX.Element => {
               <a
                 key={index}
                 href={item.href}
+                onClick={(e) => {
+                  if (item.label === "Home") {
+                    e.preventDefault();
+                    if (window.location.hash !== "#/") window.location.hash = "#/";
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
                 className="text-gray-300 hover:text-white transition-colors relative group"
               >
                 {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-white group-hover:w-full transition-all duration-300" />
               </a>
             ))}
           </nav>
 
-          <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 ml-auto">
+          <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 border-0 ml-auto">
             Join Us
           </Button>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center pt-20">
+  <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20">
         <div className="container mx-auto px-8 text-center">
-          <div className="transition-all duration-1000">
-            <h2 className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient">
+          <div ref={heroRef} className="transition-all duration-1000">
+            <h2
+              className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-white bg-clip-text text-transparent animate-blue-shift"
+              style={{
+                transition: "transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms",
+                transform: mounted ? "translateY(0)" : "translateY(20px)",
+                opacity: mounted ? 1 : 0,
+              }}
+            >
               ACM SIGBED
             </h2>
+
             <p className="text-2xl md:text-3xl text-gray-300 mb-8 max-w-4xl mx-auto">
               Welcome to India's First SIGBED Chapter
             </p>
-            <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-12">
-              Empowering Innovation at the Nexus of Intelligence and
-              Integration: Where Embedded Systems Redefine Possibilities
+
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-12 relative h-12 flex items-center justify-center">
+              {/* rotating tagline: render all and crossfade via opacity */}
+              {taglines.map((t, i) => (
+                <span
+                  key={i}
+                  className={`absolute inset-0 transition-opacity duration-700 ${tagIndex === i ? "opacity-100" : "opacity-0"}`}
+                >
+                  {t}
+                </span>
+              ))}
             </p>
-            {/* Explore More button removed per request */}
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section className="relative py-32 px-8">
+  <section data-reveal className="reveal relative py-32 px-8">
         <div className="container mx-auto">
-          <Card className="bg-gradient-to-br from-gray-900/90 to-black/90 border-purple-500/30 backdrop-blur-xl">
+          <Card className="bg-gradient-to-br from-gray-900/90 to-black/90 border-blue-400/30 backdrop-blur-xl">
             <CardContent className="p-12">
               <h2 className="text-5xl font-bold text-center mb-6 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Special Interest Group on Embedded Systems
               </h2>
-              <p className="text-2xl text-pink-400 text-center mb-8">
+              <p className="text-2xl text-blue-300 text-center mb-8">
                 Empowering Innovation, Advancing Embedded Systems
               </p>
               <div className="space-y-6 text-gray-300 text-lg max-w-5xl mx-auto">
@@ -381,7 +480,7 @@ export const Desktop = (): JSX.Element => {
                 </p>
               </div>
               <div className="flex justify-center mt-12">
-                <Button className="bg-purple-600 hover:bg-purple-700 text-lg px-8 py-6 rounded-full border-0 group">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-full border-0 group">
                   Learn More
                   <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -392,11 +491,11 @@ export const Desktop = (): JSX.Element => {
       </section>
 
       {/* About Us Section */}
-      <section className="relative py-32 px-8">
+  <section data-reveal className="reveal relative py-32 px-8">
         <div className="container mx-auto max-w-6xl">
-          <Card className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border-purple-500/30 backdrop-blur-xl">
+          <Card className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border-blue-400/30 backdrop-blur-xl">
             <CardContent className="p-12">
-              <h2 className="text-5xl font-bold text-center mb-8 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              <h2 className="text-5xl font-bold text-center mb-8 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 About Us
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed">
@@ -420,9 +519,9 @@ export const Desktop = (): JSX.Element => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="relative py-32 px-8">
+  <section id="projects" data-reveal className="reveal relative py-32 px-8">
         <div className="container mx-auto">
-          <h2 className="text-6xl font-bold text-center mb-16 bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent leading-tight pb-2">
+          <h2 className="text-6xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent leading-tight pb-2">
             Our Projects
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -431,10 +530,10 @@ export const Desktop = (): JSX.Element => {
             ))}
           </div>
           <div className="flex justify-center mt-12">
-            <div className="bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-8 py-4">
+            <div className="bg-blue-600/20 backdrop-blur-sm border border-blue-400/30 rounded-full px-8 py-4">
               <p className="text-lg">
                 Explore more Projects from{" "}
-                <span className="text-blue-400 font-semibold">
+                <span className="text-white font-semibold">
                   MUJ ACM SIGBED!
                 </span>
               </p>
@@ -444,16 +543,16 @@ export const Desktop = (): JSX.Element => {
       </section>
 
       {/* Blogs Section */}
-      <section id="blogs" className="relative py-32 px-8">
+  <section id="blogs" data-reveal className="reveal relative py-32 px-8">
         <div className="container mx-auto">
-          <h2 className="text-6xl font-bold text-center mb-16 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight pb-2">
+          <h2 className="text-6xl font-bold text-center mb-16 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent leading-tight pb-2">
             Our Blogs
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {blogPosts.map((blog, index) => (
               <Card
                 key={index}
-                className="bg-gradient-to-br from-gray-900/90 to-black/90 border-purple-500/30 backdrop-blur-xl hover:scale-105 transition-all duration-300 group cursor-pointer"
+                className="bg-gradient-to-br from-gray-900/90 to-black/90 border-blue-400/30 backdrop-blur-xl hover:scale-105 transition-all duration-300 group cursor-pointer"
               >
                 <CardContent className="p-8">
                   {blog.image ? (
@@ -477,7 +576,7 @@ export const Desktop = (): JSX.Element => {
                   </p>
                   <Button
                     asChild
-                    className="w-full bg-purple-600 hover:bg-purple-700 border-0 group"
+                    className="w-full bg-blue-600 hover:bg-blue-700 border-0 group"
                   >
                     <a
                       href={blog.href}
@@ -493,25 +592,25 @@ export const Desktop = (): JSX.Element => {
             ))}
           </div>
           <div className="flex justify-center mt-12">
-            <a
-              href="https://medium.com/@acm.sigbed"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-purple-600/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-8 py-4 text-lg flex items-center"
-            >
-              Read more blogs from{" "}
-              <span className="text-blue-400 font-semibold ml-2">
-                MUJ ACM SIGBED!
-              </span>
-            </a>
+              <a
+                href="https://medium.com/@acm.sigbed"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600/20 backdrop-blur-sm border border-blue-400/30 rounded-full px-8 py-4 text-lg flex items-center"
+              >
+                Read more blogs from{" "}
+                <span className="text-white font-semibold ml-2">
+                  MUJ ACM SIGBED!
+                </span>
+              </a>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-32 px-8">
+  <section data-reveal className="reveal relative py-32 px-8">
         <div className="container mx-auto">
-          <Card className="bg-gradient-to-r from-blue-600 to-purple-600 border-0">
+          <Card className="bg-gradient-to-r from-blue-600 to-cyan-600 border-0">
             <CardContent className="p-16 text-center">
               <h2 className="text-4xl font-bold text-white mb-4">
                 Explore the benefits of joining ACM SIGBED
@@ -521,7 +620,7 @@ export const Desktop = (): JSX.Element => {
                 like-minded individuals, gearing up for success in college and
                 beyond, with a specific focus on the Internet of Things
               </p>
-              <Button className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-12 py-6 rounded-full border-0 font-bold">
+              <Button className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-12 py-6 rounded-full border-0 font-bold">
                 Join Now
               </Button>
             </CardContent>
@@ -530,12 +629,12 @@ export const Desktop = (): JSX.Element => {
       </section>
 
       {/* Footer */}
-      <footer className="relative bg-gradient-to-br from-purple-900/50 to-pink-900/50 backdrop-blur-xl border-t border-purple-500/30 py-16 px-8">
+      <footer className="relative bg-gradient-to-br from-blue-900/40 to-white/5 backdrop-blur-xl border-t border-blue-400/30 py-16 px-8">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-4 gap-12">
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-white flex items-center justify-center">
                   <span className="text-2xl font-bold">S</span>
                 </div>
                 <h3 className="text-xl font-bold">MUJ ACM SIGBED</h3>
@@ -543,7 +642,7 @@ export const Desktop = (): JSX.Element => {
             </div>
 
             <div>
-              <h4 className="text-xl font-bold mb-4 text-purple-400">
+              <h4 className="text-xl font-bold mb-4 text-blue-300">
                 Contact Us
               </h4>
               <div className="space-y-3 text-gray-300">
@@ -565,7 +664,7 @@ export const Desktop = (): JSX.Element => {
             </div>
 
             <div>
-              <h4 className="text-xl font-bold mb-4 text-purple-400">Links</h4>
+              <h4 className="text-xl font-bold mb-4 text-blue-300">Links</h4>
               <div className="space-y-2">
                 <a
                   href="https://sigbed.vercel.app/team/developers"
@@ -598,7 +697,7 @@ export const Desktop = (): JSX.Element => {
             </div>
 
             <div>
-              <h4 className="text-xl font-bold mb-4 text-purple-400">
+              <h4 className="text-xl font-bold mb-4 text-blue-300">
                 Address
               </h4>
               <p className="text-gray-300 mb-4">
@@ -642,9 +741,40 @@ export const Desktop = (): JSX.Element => {
           }
         }
 
+        /* Smooth blue-shift for the headline gradient */
+        @keyframes blueShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        .animate-blue-shift {
+          background-size: 300% 300%;
+          animation: blueShift 6s ease-in-out infinite;
+        }
+
         .animate-gradient {
           background-size: 200% 200%;
           animation: gradient 3s ease infinite;
+        }
+
+        /* reveal panels */
+        .reveal {
+          opacity: 0;
+          transform: translateY(24px);
+          transition: opacity 800ms ease, transform 800ms cubic-bezier(.2,.9,.2,1);
+          will-change: opacity, transform;
+        }
+
+        .reveal-visible {
+          opacity: 1 !important;
+          transform: translateY(0) !important;
         }
       `}</style>
     </div>
