@@ -3,6 +3,8 @@ import Particles from "./Particles";
 import { Button } from "./buttons";
 import { Card, CardContent } from "./card";
 import { ArrowRight, Mail, Phone, ExternalLink } from "lucide-react";
+import { MobileMenu } from "./MobileMenu";
+import { BackToTop } from "./BackToTop";
 
 const navigationItems = [
   { label: "Home", href: "#/" },
@@ -248,7 +250,7 @@ export const Desktop = (): JSX.Element => {
     window.addEventListener("load", onLoad);
 
     // images may change layout; re-check when images load inside reveals
-    const imgHandler = (e: Event) => checkVisibleNow(els, io);
+    const imgHandler = () => checkVisibleNow(els, io);
     const imgs = Array.from(document.querySelectorAll("img"));
     imgs.forEach((img) => img.addEventListener("load", imgHandler));
 
@@ -393,28 +395,34 @@ export const Desktop = (): JSX.Element => {
           </div>
 
           <nav className="hidden lg:flex items-center gap-8 text-lg justify-center w-full">
-            {navigationItems.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                onClick={(e) => {
-                  if (item.label === "Home") {
-                    e.preventDefault();
-                    if (window.location.hash !== "#/") window.location.hash = "#/";
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }
-                }}
-                className="text-gray-300 hover:text-white transition-colors relative group"
-              >
-                {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-white group-hover:w-full transition-all duration-300" />
-              </a>
-            ))}
+            {navigationItems.map((item, index) => {
+              const isActive = item.href === "#/" || item.href === "#";
+              return (
+                <a
+                  key={index}
+                  href={item.href}
+                  onClick={(e) => {
+                    if (item.label === "Home") {
+                      e.preventDefault();
+                      if (window.location.hash !== "#/") window.location.hash = "#/";
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }
+                  }}
+                  className="text-gray-300 hover:text-white transition-colors relative group"
+                >
+                  {item.label}
+                  <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                </a>
+              );
+            })}
           </nav>
 
-          <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 border-0 ml-auto">
+          <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 border-0 ml-auto hidden lg:block">
             Join Us
           </Button>
+
+          {/* Mobile Menu */}
+          <MobileMenu navigationItems={navigationItems} />
         </div>
       </header>
 
@@ -777,6 +785,9 @@ export const Desktop = (): JSX.Element => {
           transform: translateY(0) !important;
         }
       `}</style>
+
+      {/* Back to Top Button */}
+      <BackToTop />
     </div>
   );
 };

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Desktop } from "./Desktop";
 import { Projects } from "./Projects";
+import { ToastProvider } from "./ToastProvider";
+import { CursorTrail } from "./CursorTrail";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const App = (): JSX.Element => {
   const [route, setRoute] = useState<string>(window.location.hash || "#/");
@@ -11,8 +14,22 @@ export const App = (): JSX.Element => {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  if (route === "#/projects" || route === "#/projects/") return <Projects />;
-  return <Desktop />;
+  return (
+    <ToastProvider>
+      <CursorTrail />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={route}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          {route === "#/projects" || route === "#/projects/" ? <Projects /> : <Desktop />}
+        </motion.div>
+      </AnimatePresence>
+    </ToastProvider>
+  );
 };
 
 export default App;
