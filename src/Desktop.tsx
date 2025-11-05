@@ -9,10 +9,10 @@ import { BackToTop } from "./BackToTop";
 const navigationItems = [
   { label: "Home", href: "#/" },
   { label: "Projects", href: "#/projects" },
-  { label: "Events", href: "#events" },
+  { label: "Events", href: "#/events" },
   { label: "Blogs", href: "#blogs" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Team", href: "#team" },
+  { label: "Gallery", href: "#/gallery" },
+  { label: "Team", href: "#/team" },
 ];
 
 const blogPosts = [
@@ -165,6 +165,7 @@ export const Desktop = (): JSX.Element => {
   ];
   const [tagIndex, setTagIndex] = useState(0);
   const heroRef = useRef<HTMLDivElement | null>(null);
+  const progressRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     // kick off headline reveal and tagline rotation
@@ -201,6 +202,37 @@ export const Desktop = (): JSX.Element => {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
+
+  // scroll progress bar for homepage (updates transform: scaleX)
+  useEffect(() => {
+    const el = progressRef.current;
+    if (!el) return;
+    let rafId = 0;
+
+    function update() {
+      const node = progressRef.current;
+      if (!node) return;
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || window.pageYOffset;
+      const height = Math.max(doc.scrollHeight - window.innerHeight, 1);
+      const progress = Math.max(0, Math.min(1, scrollTop / height));
+      node.style.transform = `scaleX(${progress})`;
+      rafId = requestAnimationFrame(update);
+    }
+
+    rafId = requestAnimationFrame(update);
+
+    // re-compute on resize and load
+    const onResize = () => { if (!rafId) rafId = requestAnimationFrame(update); };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("load", update);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("load", update);
+    };
+  }, [progressRef]);
 
   // reveal-on-scroll for panels: fade+slide when entering viewport
   useEffect(() => {
@@ -381,6 +413,11 @@ export const Desktop = (): JSX.Element => {
   return (
     <div className="bg-gradient-to-b from-black via-gray-900 to-black text-white min-h-screen overflow-x-hidden">
       <Particles />
+      <div
+        ref={progressRef}
+        className="fixed top-20 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
+        style={{ transform: "scaleX(0)", transformOrigin: "left" }}
+      />
 
       {/* Header */}
   <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20">

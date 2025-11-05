@@ -42,10 +42,10 @@ const AnimatedCounter = ({ target, suffix = "", duration = 2 }: { target: number
 const navigationItems = [
   { label: "Home", href: "#/" },
   { label: "Projects", href: "#/projects" },
-  { label: "Events", href: "#events" },
+  { label: "Events", href: "#/events" },
   { label: "Blogs", href: "#blogs" },
-  { label: "Gallery", href: "#gallery" },
-  { label: "Team", href: "#team" },
+  { label: "Gallery", href: "#/gallery" },
+  { label: "Team", href: "#/team" },
 ];
 
 const projects = [
@@ -447,8 +447,8 @@ export const Projects = (): JSX.Element => {
   
   const filteredProjects = projects.filter(project => {
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         project.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+       project.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+       project.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     const matchesCategory = selectedCategory === "All" || project.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -462,7 +462,7 @@ export const Projects = (): JSX.Element => {
       
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
+        className="fixed top-20 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
         style={{ scaleX: smoothProgress }}
       />
 

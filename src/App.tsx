@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Desktop } from "./Desktop";
 import { Projects } from "./Projects";
+import { Events } from "./Events";
+import { Gallery } from "./Gallery";
+import { Team } from "./Team";
 import { ToastProvider } from "./ToastProvider";
 import { CursorTrail } from "./CursorTrail";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,7 +28,17 @@ export const App = (): JSX.Element => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
-          {route === "#/projects" || route === "#/projects/" ? <Projects /> : <Desktop />}
+          {route === "#/projects" || route === "#/projects/" ? (
+            <Projects />
+          ) : route === "#/events" || route === "#/events/" ? (
+            <Events />
+          ) : route === "#/gallery" || route === "#/gallery/" ? (
+            <Gallery />
+          ) : route === "#/team" || route === "#/team/" ? (
+            <Team />
+          ) : (
+            <Desktop />
+          )}
         </motion.div>
       </AnimatePresence>
     </ToastProvider>

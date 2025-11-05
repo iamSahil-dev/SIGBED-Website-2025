@@ -1,9 +1,22 @@
 import { useEffect, useRef } from "react";
 
-const DOT_COUNT = 150;
+const DOT_COUNT = 180;
+
+type BurstParticle = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  life: number;
+  size: number;
+  color: string;
+};
 
 export default function Particles(): JSX.Element {
   const dotsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const burstsRef = useRef<BurstParticle[]>([]);
+  const burstElsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
   const positionsRef = useRef(
     Array.from({ length: DOT_COUNT }).map(() => {
       const z = Math.random() * 0.9 + 0.1; // depth
@@ -43,6 +56,31 @@ export default function Particles(): JSX.Element {
       lastMouseRef.current = { x: e.clientX, y: e.clientY, t: now };
     }
 
+    function onPointerDown(e: PointerEvent) {
+      // spawn a burst at the click/tap location
+      const x = e.clientX;
+      const y = e.clientY;
+      const count = 18;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.2 + Math.random() * 6.0;
+        const z = Math.random() * 0.9 + 0.1;
+        const size = 2 + Math.random() * 6 * (1 - z);
+        const hue = 190 + Math.random() * 80; // cyan->blue range
+        burstsRef.current.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 0.8 + Math.random() * 0.6,
+          size,
+          color: `hsl(${hue}, 90%, ${50 - z * 10}%)`,
+        });
+      }
+      // cap to pool size
+      if (burstsRef.current.length > 64) burstsRef.current.splice(0, burstsRef.current.length - 64);
+    }
+
     window.addEventListener("mousemove", onMove);
     // support pointermove for better cross-device responsiveness (store handler for cleanup)
     const pointerHandler = (ev: any) => {
@@ -50,6 +88,7 @@ export default function Particles(): JSX.Element {
       onMove(ev as MouseEvent);
     };
     window.addEventListener("pointermove", pointerHandler);
+    window.addEventListener("pointerdown", onPointerDown);
 
     function tick() {
       const positions = positionsRef.current;
@@ -112,10 +151,44 @@ export default function Particles(): JSX.Element {
 
         const el = dotsRef.current[i];
         if (el) {
-          const depthScale = 0.6 + (1 - p.z) * 1.2;
+          const depthScale = 0.6 + (1 - p.z) * 1.4;
+          const hue = 200 + (1 - p.z) * 80; // depth-dependent hue
+          el.style.background = `radial-gradient(circle at 30% 30%, hsl(${hue},90%,70%), hsl(${hue},80%,55%))`;
+          el.style.boxShadow = `0 0 ${4 + (1 - p.z) * 8}px rgba(100,170,255,${0.12 + (1 - p.z) * 0.18})`;
           el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) scale(${p.baseSize * depthScale})`;
-          el.style.opacity = `${0.35 + (1 - p.z) * 0.6 + Math.max(0, Math.sin((p.x + p.y) * 0.02)) * 0.2}`;
+          el.style.opacity = `${0.25 + (1 - p.z) * 0.75}`;
         }
+      }
+
+  // update bursts
+      const bursts = burstsRef.current;
+      for (let i = bursts.length - 1; i >= 0; i--) {
+        const b = bursts[i];
+        b.vx *= 0.92;
+        b.vy *= 0.92;
+        b.vy += 0.02 * (1 - Math.random());
+        b.x += b.vx;
+        b.y += b.vy;
+        b.life -= 0.016;
+        const bel = burstElsRef.current[i];
+        if (bel) {
+          bel.style.transform = `translate3d(${b.x}px, ${b.y}px, 0) scale(${b.size / 4})`;
+          bel.style.opacity = `${Math.max(0, Math.min(1, b.life))}`;
+          bel.style.background = b.color;
+        }
+        if (b.life <= 0) {
+          bursts.splice(i, 1);
+          // also remove corresponding DOM entry by keeping elements synced in render
+        }
+      }
+
+      // update cursor ring (smooth follow)
+      const cur = cursorRef.current;
+      if (cur) {
+        const cx = mousePosRef.current.x;
+        const cy = mousePosRef.current.y;
+        // gentle trailing via CSS transform — use small lerp
+        cur.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
       }
       raf = requestAnimationFrame(tick);
     }
@@ -125,47 +198,92 @@ export default function Particles(): JSX.Element {
     return () => {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("pointermove", pointerHandler);
+      window.removeEventListener("pointerdown", onPointerDown);
       cancelAnimationFrame(raf);
     };
   }, []);
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,120,255,0.06),transparent_50%)]" />
+      {/* subtle animated radial background */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(6,182,212,0.06),transparent_20%),radial-gradient(circle_at_70%_70%,rgba(59,130,246,0.04),transparent_30%)] animate-gradient-bg" />
+
+      {/* decorative slow orbs */}
       <div className="absolute top-0 left-0 w-full h-full">
-        {[...Array(50)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <div
             key={i}
-            className="absolute rounded-full bg-white/10"
+            className="absolute rounded-full"
             style={{
-              width: Math.random() * 4 + 1 + "px",
-              height: Math.random() * 4 + 1 + "px",
-              top: Math.random() * 100 + "%",
-              left: Math.random() * 100 + "%",
-              animation: `float ${Math.random() * 10 + 10}s linear infinite`,
-              animationDelay: Math.random() * 5 + "s",
+              width: `${60 + Math.random() * 140}px`,
+              height: `${60 + Math.random() * 140}px`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              background: `radial-gradient(circle at 30% 30%, rgba(6,182,212,${0.06 + Math.random() * 0.06}), rgba(59,130,246,${0.02 + Math.random() * 0.03}))`,
+              filter: "blur(34px)",
+              transform: `translate3d(0,0,0)`,
+              animation: `float ${40 + Math.random() * 30}s linear infinite`,
+              animationDelay: `${Math.random() * 10}s`,
             }}
           />
         ))}
       </div>
 
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        {Array.from({ length: DOT_COUNT }).map((_, i) => (
+      {/* floating project icons removed per user request */}
+
+      {/* bursts layer (fixed pool for DOM reuse) */}
+      <div className="absolute inset-0 z-20 pointer-events-none">
+        {Array.from({ length: 64 }).map((_, i) => (
           <div
             key={i}
-            ref={(el) => (dotsRef.current[i] = el)}
-            className="absolute bg-white rounded-full"
+            ref={(el) => (burstElsRef.current[i] = el)}
+            className="absolute rounded-full"
             style={{
-              width: "4px",
-              height: "4px",
-              transform: "translate3d(-100px,-100px,0) scale(1)",
-              opacity: 0.6,
-              willChange: "transform, opacity",
+              width: "6px",
+              height: "6px",
+              transform: "translate3d(-100px,-100px,0)",
+              opacity: 0,
+              willChange: "transform, opacity, background",
               pointerEvents: "none",
             }}
           />
         ))}
       </div>
+
+      {/* main particle dots */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        {Array.from({ length: DOT_COUNT }).map((_, i) => (
+          <div
+            key={i}
+            ref={(el) => (dotsRef.current[i] = el)}
+            className="absolute rounded-full"
+            style={{
+              width: "4px",
+              height: "4px",
+              transform: "translate3d(-100px,-100px,0) scale(1)",
+              opacity: 0.6,
+              willChange: "transform, opacity, background",
+              pointerEvents: "none",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* cursor ring (visual only) */}
+      <div
+        ref={(el) => (cursorRef.current = el)}
+        className="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-1/2"
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 9999,
+          border: "2px solid rgba(6,182,212,0.85)",
+          boxShadow: "0 0 12px rgba(6,182,212,0.18), 0 0 28px rgba(59,130,246,0.08)",
+          transform: `translate3d(${mousePosRef.current.x}px, ${mousePosRef.current.y}px, 0)`,
+          transition: "transform 0.06s linear",
+          mixBlendMode: "screen",
+        }}
+      />
     </div>
   );
 }

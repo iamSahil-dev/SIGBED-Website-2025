@@ -88,4 +88,24 @@ body {
   to { opacity: 0; visibility: hidden; }
 }
 
+/* Particles/background helpers */
+.animate-gradient-bg {
+  background-size: 200% 200%, 200% 200%;
+  animation: gradientShift 18s linear infinite;
+}
+@keyframes gradientShift {
+  0% { background-position: 0% 50%, 100% 50%; }
+  50% { background-position: 100% 50%, 0% 50%; }
+  100% { background-position: 0% 50%, 100% 50%; }
+}
+
+@keyframes float {
+  0% { transform: translate3d(0,0,0) }
+  50% { transform: translate3d(0,-18px,0) }
+  100% { transform: translate3d(0,0,0) }
+}
+
+/* make the page allow interaction and scrolling again */
+body { overflow: auto; }
+
 
