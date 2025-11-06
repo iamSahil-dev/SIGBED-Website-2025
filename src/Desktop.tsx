@@ -503,9 +503,18 @@ export const Desktop = (): JSX.Element => {
             </div>
 
             {/* Right Column: Interactive Robot - Full Width */}
-            <div className="flex-1 w-full lg:w-[55%] xl:w-[50%] flex items-center justify-center relative z-10 overflow-hidden">
-              <div className="w-full h-[550px] md:h-[700px] lg:h-[750px] relative overflow-hidden flex items-center justify-center px-8 lg:px-12">
-                <div className="w-full h-full relative" style={{ transform: 'scale(0.9)', transformOrigin: 'center' }}>
+            <div className="flex-1 w-full lg:w-[55%] xl:w-[50%] flex items-center justify-center relative z-10 overflow-visible">
+              <div className="w-full h-[550px] md:h-[700px] lg:h-[750px] relative overflow-visible flex items-center justify-center px-12 lg:px-16">
+              <div
+                  className="w-full h-full relative overflow-visible"
+                  style={{
+                    transform: 'scale(0.9)',
+                    transformOrigin: 'center',
+                    width: 'calc(100% + 180px)',
+                    marginLeft: '-90px',
+                    marginRight: '-100px',
+                  }}
+                >
                   <InteractiveRobot />
                 </div>
               </div>
