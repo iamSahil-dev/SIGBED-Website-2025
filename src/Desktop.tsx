@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Particles from "./Particles";
+import { Link } from "react-router-dom";
 import { Button } from "./buttons";
 import { Card, CardContent } from "./card";
 import { ArrowRight, Mail, Phone, ExternalLink } from "lucide-react";
@@ -423,10 +424,12 @@ export const Desktop = (): JSX.Element => {
   <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20">
         <div className="w-full px-8 h-20 flex items-center">
           <div className="flex items-center gap-4 group cursor-pointer mr-auto">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
-              <span className="text-2xl font-bold">S</span>
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
+            <img 
+              src="public/logo.png" 
+              alt="SIGBED Logo" 
+              className="h-14 w-auto object-contain transform group-hover:scale-110 transition-transform cursor-pointer"
+            /> 
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               MUJ ACM SIGBED
             </h1>
           </div>
@@ -454,8 +457,11 @@ export const Desktop = (): JSX.Element => {
             })}
           </nav>
 
-          <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 border-0 ml-auto hidden lg:block">
-            Join Us
+          <Button 
+            asChild
+            className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 border-0 ml-auto hidden lg:block"
+          >
+            <Link to="/auth-choice">Join Us</Link>
           </Button>
 
           {/* Mobile Menu */}
@@ -464,11 +470,11 @@ export const Desktop = (): JSX.Element => {
       </header>
 
       {/* Hero Section */}
-  <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20">
+      <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
         <div className="container mx-auto px-8 text-center">
           <div ref={heroRef} className="transition-all duration-1000">
             <h2
-              className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-white bg-clip-text text-transparent animate-blue-shift"
+              className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent animate-gradient"
               style={{
                 transition: "transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms",
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
@@ -494,8 +500,9 @@ export const Desktop = (): JSX.Element => {
               ))}
             </p>
           </div>
+          
         </div>
-      </section>
+      </section>    
 
       {/* About Section */}
   <section data-reveal className="reveal relative py-32 px-8">
@@ -665,8 +672,11 @@ export const Desktop = (): JSX.Element => {
                 like-minded individuals, gearing up for success in college and
                 beyond, with a specific focus on the Internet of Things
               </p>
-              <Button className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-12 py-6 rounded-full border-0 font-bold">
-                Join Now
+              <Button 
+                asChild
+                className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-12 py-6 rounded-full border-0 font-bold"
+              >
+                <Link to="/auth-choice">Join Now</Link>
               </Button>
             </CardContent>
           </Card>
@@ -679,9 +689,11 @@ export const Desktop = (): JSX.Element => {
           <div className="grid md:grid-cols-4 gap-12">
             <div>
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-white flex items-center justify-center">
-                  <span className="text-2xl font-bold">S</span>
-                </div>
+              <img 
+              src="public/logo.png" 
+              alt="SIGBED Logo" 
+              className="h-14 w-auto object-contain transform group-hover:scale-110 transition-transform cursor-pointer"
+            />
                 <h3 className="text-xl font-bold">MUJ ACM SIGBED</h3>
               </div>
             </div>
