@@ -6,6 +6,8 @@ import { Card, CardContent } from "./card";
 import { ArrowRight, Mail, Phone, ExternalLink } from "lucide-react";
 import { MobileMenu } from "./MobileMenu";
 import { BackToTop } from "./BackToTop";
+import { InteractiveRobot } from "@/components/ui/InteractiveRobot";
+import { Spotlight } from "@/components/ui/spotlight";
 
 const navigationItems = [
   { label: "Home", href: "#/" },
@@ -494,11 +496,59 @@ export const Desktop = (): JSX.Element => {
                 <span
                   key={i}
                   className={`absolute inset-0 transition-opacity duration-700 ${tagIndex === i ? "opacity-100" : "opacity-0"}`}
+  <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        {/* Spotlight effect for the entire hero section - attached to section */}
+        <Spotlight size={450} springOptions={{ damping: 30, stiffness: 150 }} />
+        
+        <div className="container mx-auto px-8 relative z-10">
+          <div ref={heroRef} className="transition-all duration-1000 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+            {/* Left Column: Text Content */}
+            <div className="flex-1 text-center lg:text-left relative z-20">
+              <h2
+                className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-white bg-clip-text text-transparent animate-blue-shift drop-shadow-2xl relative z-10"
+                style={{
+                  transition: "transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms",
+                  transform: mounted ? "translateY(0)" : "translateY(20px)",
+                  opacity: mounted ? 1 : 0,
+                }}
+              >
+                ACM SIGBED
+              </h2>
+
+              <p className="text-2xl md:text-3xl text-gray-300 mb-8 drop-shadow-lg relative z-10">
+                Welcome to India's First SIGBED Chapter
+              </p>
+
+              <p className="text-lg text-gray-400 relative h-12 flex items-center justify-center lg:justify-start z-10">
+                {/* rotating tagline: render all and crossfade via opacity */}
+                {taglines.map((t, i) => (
+                  <span
+                    key={i}
+                    className={`absolute transition-opacity duration-700 ${tagIndex === i ? "opacity-100" : "opacity-0"}`}
+                  >
+                    {t}
+                  </span>
+                ))}
+              </p>
+            </div>
+
+            {/* Right Column: Interactive Robot - Full Width */}
+            <div className="flex-1 w-full lg:w-[55%] xl:w-[50%] flex items-center justify-center relative z-10 overflow-visible">
+              <div className="w-full h-[550px] md:h-[700px] lg:h-[750px] relative overflow-visible flex items-center justify-center px-12 lg:px-16">
+              <div
+                  className="w-full h-full relative overflow-visible"
+                  style={{
+                    transform: 'scale(0.9)',
+                    transformOrigin: 'center',
+                    width: 'calc(100% + 180px)',
+                    marginLeft: '-90px',
+                    marginRight: '-100px',
+                  }}
                 >
-                  {t}
-                </span>
-              ))}
-            </p>
+                  <InteractiveRobot />
+                </div>
+              </div>
+            </div>
           </div>
           
         </div>
