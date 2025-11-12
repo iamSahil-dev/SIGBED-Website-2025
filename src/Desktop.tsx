@@ -466,7 +466,11 @@ export const Desktop = (): JSX.Element => {
       </header>
 
       {/* Hero Section */}
+<<<<<<< Updated upstream
   <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+=======
+      <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+>>>>>>> Stashed changes
         {/* Spotlight effect for the entire hero section - attached to section */}
         <Spotlight size={450} springOptions={{ damping: 30, stiffness: 150 }} />
         
@@ -505,7 +509,7 @@ export const Desktop = (): JSX.Element => {
             {/* Right Column: Interactive Robot - Full Width */}
             <div className="flex-1 w-full lg:w-[55%] xl:w-[50%] flex items-center justify-center relative z-10 overflow-visible">
               <div className="w-full h-[550px] md:h-[700px] lg:h-[750px] relative overflow-visible flex items-center justify-center px-12 lg:px-16">
-              <div
+                <div
                   className="w-full h-full relative overflow-visible"
                   style={{
                     transform: 'scale(0.9)',

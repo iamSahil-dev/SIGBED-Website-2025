@@ -1,4 +1,372 @@
 {
+<<<<<<< Updated upstream
   "nodes": [],
   "edges": []
+=======
+  "nodes": [
+    {
+      "id": "src/Desktop.tsx",
+      "label": "Desktop",
+      "routes": [
+        "/"
+      ],
+      "isRoot": true
+    },
+    {
+      "id": "src/Projects.tsx",
+      "label": "Projects",
+      "routes": [
+        "/projects"
+      ]
+    },
+    {
+      "id": "src/Events.tsx",
+      "label": "Events",
+      "routes": [
+        "/events"
+      ]
+    },
+    {
+      "id": "src/Gallery.tsx",
+      "label": "Gallery",
+      "routes": [
+        "/gallery"
+      ]
+    },
+    {
+      "id": "src/Team.tsx",
+      "label": "Team",
+      "routes": [
+        "/team"
+      ]
+    },
+    {
+      "id": "src/AuthChoice.tsx",
+      "label": "AuthChoice",
+      "routes": [
+        "/auth-choice"
+      ]
+    },
+    {
+      "id": "src/Registration.tsx",
+      "label": "Registration",
+      "routes": [
+        "/register"
+      ]
+    },
+    {
+      "id": "src/Login.tsx",
+      "label": "Login",
+      "routes": [
+        "/login"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "src\\Desktop.tsx:471:12-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "<Link to=\"/auth-choice\">Join Us</Link>",
+          "line": 471,
+          "endLine": 471,
+          "column": 12,
+          "endColumn": 50,
+          "sourceFile": "src\\Desktop.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Desktop.tsx:709:16-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "<Link to=\"/auth-choice\">Join Now</Link>",
+          "line": 709,
+          "endLine": 709,
+          "column": 16,
+          "endColumn": 55,
+          "sourceFile": "src\\Desktop.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\MobileMenu.tsx:182:20-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "navigate('/auth-choice')",
+          "line": 182,
+          "endLine": 182,
+          "column": 20,
+          "endColumn": 44,
+          "sourceFile": "src\\MobileMenu.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\MobileMenu.tsx:182:20-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "navigate('/auth-choice')",
+          "line": 182,
+          "endLine": 182,
+          "column": 20,
+          "endColumn": 44,
+          "sourceFile": "src\\MobileMenu.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\MobileMenu.tsx:182:20-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "navigate('/auth-choice')",
+          "line": 182,
+          "endLine": 182,
+          "column": 20,
+          "endColumn": 44,
+          "sourceFile": "src\\MobileMenu.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\MobileMenu.tsx:182:20-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "navigate('/auth-choice')",
+          "line": 182,
+          "endLine": 182,
+          "column": 20,
+          "endColumn": 44,
+          "sourceFile": "src\\MobileMenu.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\MobileMenu.tsx:182:20-to-src\\AuthChoice.tsx",
+      "source": "src\\Desktop.tsx",
+      "target": "src\\AuthChoice.tsx",
+      "data": {
+        "viaRoute": "/auth-choice",
+        "trigger": {
+          "element": "navigate('/auth-choice')",
+          "line": 182,
+          "endLine": 182,
+          "column": 20,
+          "endColumn": 44,
+          "sourceFile": "src\\MobileMenu.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\AuthChoice.tsx:19:95-to-src\\Desktop.tsx",
+      "source": "src\\AuthChoice.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 19,
+          "endLine": 19,
+          "column": 95,
+          "endColumn": 108,
+          "sourceFile": "src\\AuthChoice.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\AuthChoice.tsx:46:193-to-src\\Login.tsx",
+      "source": "src\\AuthChoice.tsx",
+      "target": "src\\Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate('/login')",
+          "line": 46,
+          "endLine": 46,
+          "column": 193,
+          "endColumn": 211,
+          "sourceFile": "src\\AuthChoice.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\AuthChoice.tsx:66:193-to-src\\Registration.tsx",
+      "source": "src\\AuthChoice.tsx",
+      "target": "src\\Registration.tsx",
+      "data": {
+        "viaRoute": "/register",
+        "trigger": {
+          "element": "navigate('/register')",
+          "line": 66,
+          "endLine": 66,
+          "column": 193,
+          "endColumn": 214,
+          "sourceFile": "src\\AuthChoice.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\AuthChoice.tsx:90:29-to-src\\Desktop.tsx",
+      "source": "src\\AuthChoice.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 90,
+          "endLine": 90,
+          "column": 29,
+          "endColumn": 42,
+          "sourceFile": "src\\AuthChoice.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Registration.tsx:90:6-to-src\\Login.tsx",
+      "source": "src\\Registration.tsx",
+      "target": "src\\Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "navigate('/login')",
+          "line": 90,
+          "endLine": 90,
+          "column": 6,
+          "endColumn": 24,
+          "sourceFile": "src\\Registration.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Registration.tsx:115:95-to-src\\Desktop.tsx",
+      "source": "src\\Registration.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 115,
+          "endLine": 115,
+          "column": 95,
+          "endColumn": 108,
+          "sourceFile": "src\\Registration.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Registration.tsx:285:35-to-src\\Desktop.tsx",
+      "source": "src\\Registration.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 285,
+          "endLine": 285,
+          "column": 35,
+          "endColumn": 48,
+          "sourceFile": "src\\Registration.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Registration.tsx:301:20-to-src\\Login.tsx",
+      "source": "src\\Registration.tsx",
+      "target": "src\\Login.tsx",
+      "data": {
+        "viaRoute": "/login",
+        "trigger": {
+          "element": "<Link \r\n                      to=\"/login\" \r\n                      className=\"text-purple-400 hover:text-purple-300 underline transition-colors\"\r\n                    >\r\n                      Login here\r\n                    </Link>",
+          "line": 301,
+          "endLine": 306,
+          "column": 20,
+          "endColumn": 27,
+          "sourceFile": "src\\Registration.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Login.tsx:28:6-to-src\\Desktop.tsx",
+      "source": "src\\Login.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 28,
+          "endLine": 28,
+          "column": 6,
+          "endColumn": 19,
+          "sourceFile": "src\\Login.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Login.tsx:53:95-to-src\\Desktop.tsx",
+      "source": "src\\Login.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 53,
+          "endLine": 53,
+          "column": 95,
+          "endColumn": 108,
+          "sourceFile": "src\\Login.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Login.tsx:119:35-to-src\\Desktop.tsx",
+      "source": "src\\Login.tsx",
+      "target": "src\\Desktop.tsx",
+      "data": {
+        "viaRoute": "/",
+        "trigger": {
+          "element": "navigate('/')",
+          "line": 119,
+          "endLine": 119,
+          "column": 35,
+          "endColumn": 48,
+          "sourceFile": "src\\Login.tsx"
+        }
+      }
+    },
+    {
+      "id": "src\\Login.tsx:135:20-to-src\\Registration.tsx",
+      "source": "src\\Login.tsx",
+      "target": "src\\Registration.tsx",
+      "data": {
+        "viaRoute": "/register",
+        "trigger": {
+          "element": "<Link \r\n                      to=\"/register\" \r\n                      className=\"text-purple-400 hover:text-purple-300 underline transition-colors\"\r\n                    >\r\n                      Register here\r\n                    </Link>",
+          "line": 135,
+          "endLine": 140,
+          "column": 20,
+          "endColumn": 27,
+          "sourceFile": "src\\Login.tsx"
+        }
+      }
+    }
+  ]
+>>>>>>> Stashed changes
 }

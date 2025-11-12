@@ -42,10 +42,10 @@ const AnimatedCounter = ({ target, suffix = "", duration = 2 }: { target: number
 const navigationItems = [
   { label: "Home", href: "#/" },
   { label: "Projects", href: "#/projects" },
-  { label: "Events", href: "#/events" },
+  { label: "Events", href: "#events" },
   { label: "Blogs", href: "#blogs" },
-  { label: "Gallery", href: "#/gallery" },
-  { label: "Team", href: "#/team" },
+  { label: "Gallery", href: "#gallery" },
+  { label: "Team", href: "#team" },
 ];
 
 const projects = [
