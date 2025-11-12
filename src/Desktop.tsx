@@ -465,16 +465,8 @@ export const Desktop = (): JSX.Element => {
         </div>
       </header>
 
-      {/* Hero Section */}
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+  {/* Hero Section */}
   <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
-=======
-      <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
->>>>>>> Stashed changes
-=======
-      <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
->>>>>>> Stashed changes
         {/* Spotlight effect for the entire hero section - attached to section */}
         <Spotlight size={450} springOptions={{ damping: 30, stiffness: 150 }} />
         
