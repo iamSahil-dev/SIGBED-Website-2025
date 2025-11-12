@@ -467,7 +467,11 @@ export const Desktop = (): JSX.Element => {
 
       {/* Hero Section */}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+=======
+      <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+>>>>>>> Stashed changes
 =======
       <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
 >>>>>>> Stashed changes
