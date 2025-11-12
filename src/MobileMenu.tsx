@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Menu } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Button } from "./buttons";
 
 interface MobileMenuProps {
@@ -10,7 +9,6 @@ interface MobileMenuProps {
 
 export const MobileMenu = ({ navigationItems }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
 
   const menuVariants = {
     closed: {
@@ -171,10 +169,7 @@ export const MobileMenu = ({ navigationItems }: MobileMenuProps) => {
               >
                 <Button 
                   className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 text-white font-bold py-4 text-lg shadow-lg shadow-blue-500/30"
-                  onClick={() => {
-                    setIsOpen(false);
-                    navigate('/auth-choice');
-                  }}
+                  onClick={() => setIsOpen(false)}
                 >
                   Join Us
                 </Button>
