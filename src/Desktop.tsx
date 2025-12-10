@@ -417,23 +417,20 @@ export const Desktop = (): JSX.Element => {
       <Particles />
       <div
         ref={progressRef}
-        className="fixed top-20 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
+        className="fixed top-[70px] left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
         style={{ transform: "scaleX(0)", transformOrigin: "left" }}
       />
 
       {/* Header */}
-  <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20">
-        <div className="w-full px-8 h-20 flex items-center">
-          <div className="flex items-center gap-4 group cursor-pointer mr-auto">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
-              <span className="text-2xl font-bold">S</span>
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
+  <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20 min-h-[70px]">
+        <div className="w-full px-4 sm:px-6 lg:px-8 min-h-[70px] flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center group cursor-pointer flex-shrink-0">
+            <h1 className="text-base sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
               MUJ ACM SIGBED
             </h1>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-8 text-lg justify-center w-full">
+          <nav className="hidden lg:flex items-center gap-6 lg:gap-8 text-sm lg:text-base">
             {navigationItems.map((item, index) => {
               const isActive = item.href === "#/" || item.href === "#";
               return (
@@ -447,7 +444,7 @@ export const Desktop = (): JSX.Element => {
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }
                   }}
-                  className="text-gray-300 hover:text-white transition-colors relative group"
+                  className="text-gray-300 hover:text-white transition-colors relative group whitespace-nowrap"
                 >
                   {item.label}
                   <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-white transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
@@ -456,26 +453,28 @@ export const Desktop = (): JSX.Element => {
             })}
           </nav>
 
-          <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 border-0 ml-auto hidden lg:block">
+          <Button className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 border-0 hidden lg:block text-sm lg:text-base px-6 lg:px-8">
             Join Us
           </Button>
 
           {/* Mobile Menu */}
-          <MobileMenu navigationItems={navigationItems} />
+          <div className="lg:hidden">
+            <MobileMenu navigationItems={navigationItems} />
+          </div>
         </div>
       </header>
 
   {/* Hero Section */}
-  <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+  <section data-reveal className="reveal relative min-h-screen flex items-center justify-center pt-[90px] overflow-hidden">
         {/* Spotlight effect for the entire hero section - attached to section */}
         <Spotlight size={450} springOptions={{ damping: 30, stiffness: 150 }} />
         
-        <div className="container mx-auto px-8 relative z-10">
-          <div ref={heroRef} className="transition-all duration-1000 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div ref={heroRef} className="transition-all duration-1000 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
             {/* Left Column: Text Content */}
-            <div className="flex-1 text-center lg:text-left relative z-20">
+            <div className="flex-1 text-center lg:text-left relative z-20 w-full">
               <h2
-                className="text-7xl md:text-9xl font-black mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-white bg-clip-text text-transparent animate-blue-shift drop-shadow-2xl relative z-10"
+                className="text-5xl sm:text-7xl lg:text-9xl font-black mb-4 sm:mb-6 bg-gradient-to-r from-blue-400 via-cyan-400 to-white bg-clip-text text-transparent animate-blue-shift drop-shadow-2xl relative z-10"
                 style={{
                   transition: "transform 700ms cubic-bezier(.2,.9,.2,1), opacity 600ms",
                   transform: mounted ? "translateY(0)" : "translateY(20px)",
@@ -485,16 +484,16 @@ export const Desktop = (): JSX.Element => {
                 ACM SIGBED
               </h2>
 
-              <p className="text-2xl md:text-3xl text-gray-300 mb-8 drop-shadow-lg relative z-10">
+              <p className="text-lg sm:text-2xl lg:text-3xl text-gray-300 mb-6 sm:mb-8 drop-shadow-lg relative z-10">
                 Welcome to India's First SIGBED Chapter
               </p>
 
-              <p className="text-lg text-gray-400 relative h-12 flex items-center justify-center lg:justify-start z-10">
+              <p className="text-sm sm:text-base lg:text-lg text-gray-400 relative h-12 flex items-center justify-center lg:justify-start z-10">
                 {/* rotating tagline: render all and crossfade via opacity */}
                 {taglines.map((t, i) => (
                   <span
                     key={i}
-                    className={`absolute transition-opacity duration-700 ${tagIndex === i ? "opacity-100" : "opacity-0"}`}
+                    className={`absolute transition-opacity duration-700 px-4 sm:px-0 ${tagIndex === i ? "opacity-100" : "opacity-0"}`}
                   >
                     {t}
                   </span>
@@ -504,7 +503,7 @@ export const Desktop = (): JSX.Element => {
 
             {/* Right Column: Interactive Robot - Full Width */}
             <div className="flex-1 w-full lg:w-[55%] xl:w-[50%] flex items-center justify-center relative z-10 overflow-visible">
-              <div className="w-full h-[550px] md:h-[700px] lg:h-[750px] relative overflow-visible flex items-center justify-center px-12 lg:px-16">
+              <div className="w-full h-[350px] sm:h-[500px] lg:h-[700px] relative overflow-visible flex items-center justify-center px-4 sm:px-12 lg:px-16">
                 <div
                   className="w-full h-full relative overflow-visible"
                   style={{
@@ -524,17 +523,17 @@ export const Desktop = (): JSX.Element => {
       </section>
 
       {/* About Section */}
-  <section data-reveal className="reveal relative py-32 px-8">
+  <section data-reveal className="reveal relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto">
           <Card className="bg-gradient-to-br from-gray-900/90 to-black/90 border-blue-400/30 backdrop-blur-xl">
-            <CardContent className="p-12">
-              <h2 className="text-5xl font-bold text-center mb-6 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <CardContent className="p-6 sm:p-8 lg:p-12">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 sm:mb-6 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 Special Interest Group on Embedded Systems
               </h2>
-              <p className="text-2xl text-blue-300 text-center mb-8">
+              <p className="text-lg sm:text-xl lg:text-2xl text-blue-300 text-center mb-6 sm:mb-8">
                 Empowering Innovation, Advancing Embedded Systems
               </p>
-              <div className="space-y-6 text-gray-300 text-lg max-w-5xl mx-auto">
+              <div className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg max-w-5xl mx-auto">
                 <p>
                   ACM SIGBED is a focal point within the Association for
                   Computing Machinery (ACM) for all aspects of embedded
@@ -551,10 +550,6 @@ export const Desktop = (): JSX.Element => {
                 </p>
               </div>
               <div className="flex justify-center mt-12">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-6 rounded-full border-0 group">
-                  Learn More
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
               </div>
             </CardContent>
           </Card>
@@ -562,14 +557,14 @@ export const Desktop = (): JSX.Element => {
       </section>
 
       {/* About Us Section */}
-  <section data-reveal className="reveal relative py-32 px-8">
+  <section data-reveal className="reveal relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-6xl">
           <Card className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border-blue-400/30 backdrop-blur-xl">
-            <CardContent className="p-12">
-              <h2 className="text-5xl font-bold text-center mb-8 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <CardContent className="p-6 sm:p-8 lg:p-12">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
                 About Us
               </h2>
-              <p className="text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-300 text-sm sm:text-base lg:text-lg leading-relaxed">
                 The Manipal University Jaipur (MUJ) ACM SIGBED Student Chapter
                 is a place where innovation and technology meet to flourish! As
                 an integral part of the larger ACM SIGBED, our chapter serves as
@@ -601,14 +596,14 @@ export const Desktop = (): JSX.Element => {
             ))}
           </div>
           <div className="flex justify-center mt-12">
-            <div className="bg-blue-600/20 backdrop-blur-sm border border-blue-400/30 rounded-full px-8 py-4">
+            <a href="#/projects" className="bg-blue-600/20 backdrop-blur-sm border border-blue-400/30 rounded-full px-8 py-4 hover:bg-blue-600/30 hover:border-blue-400/50 transition-all cursor-pointer">
               <p className="text-lg">
                 Explore more Projects from{" "}
                 <span className="text-white font-semibold">
                   MUJ ACM SIGBED!
                 </span>
               </p>
-            </div>
+            </a>
           </div>
         </div>
       </section>
@@ -678,20 +673,20 @@ export const Desktop = (): JSX.Element => {
         </div>
       </section>
 
-      {/* CTA Section */}
-  <section data-reveal className="reveal relative py-32 px-8">
+      {/* CTA Section - Hidden on Mobile */}
+  <section data-reveal className="reveal relative hidden sm:block py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto">
           <Card className="bg-gradient-to-r from-blue-600 to-cyan-600 border-0">
-            <CardContent className="p-16 text-center">
-              <h2 className="text-4xl font-bold text-white mb-4">
+            <CardContent className="p-8 sm:p-12 lg:p-16 text-center">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
                 Explore the benefits of joining ACM SIGBED
               </h2>
-              <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto">
+              <p className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 max-w-3xl mx-auto">
                 Your gateway to the world of IoT. Join us to connect with
                 like-minded individuals, gearing up for success in college and
                 beyond, with a specific focus on the Internet of Things
               </p>
-              <Button className="bg-white text-blue-600 hover:bg-gray-100 text-lg px-12 py-6 rounded-full border-0 font-bold">
+              <Button className="bg-white text-blue-600 hover:bg-gray-100 text-base lg:text-lg px-8 sm:px-12 py-4 lg:py-6 rounded-full border-0 font-bold">
                 Join Now
               </Button>
             </CardContent>
@@ -720,15 +715,15 @@ export const Desktop = (): JSX.Element => {
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
                   <div>
-                    <p>Tanmay Kaushik</p>
-                    <p>+91 93503 78040</p>
+                    <p>Parthav Shah</p>
+                    <p>+91 90826 91836</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4" />
                   <div>
-                    <p>Saamarth Mishra</p>
-                    <p>+91 99192 01610</p>
+                    <p>Mumukshu Bohra</p>
+                    <p>+91 73572 31109</p>
                   </div>
                 </div>
               </div>
@@ -737,15 +732,6 @@ export const Desktop = (): JSX.Element => {
             <div>
               <h4 className="text-xl font-bold mb-4 text-blue-300">Links</h4>
               <div className="space-y-2">
-                <a
-                  href="https://sigbed.vercel.app/team/developers"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Development Team
-                </a>
                 <a
                   href="https://www.acm.org/"
                   target="_blank"

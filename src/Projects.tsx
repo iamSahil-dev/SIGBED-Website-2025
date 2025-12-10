@@ -42,7 +42,7 @@ const AnimatedCounter = ({ target, suffix = "", duration = 2 }: { target: number
 const navigationItems = [
   { label: "Home", href: "#/" },
   { label: "Projects", href: "#/projects" },
-  { label: "Events", href: "#events" },
+  { label: "Events", href: "#/events" },
   { label: "Blogs", href: "#blogs" },
   { label: "Gallery", href: "#gallery" },
   { label: "Team", href: "#team" },
@@ -462,43 +462,30 @@ export const Projects = (): JSX.Element => {
       
       {/* Scroll Progress Bar */}
       <motion.div
-        className="fixed top-20 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
+        className="fixed top-[70px] left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
         style={{ scaleX: smoothProgress }}
       />
 
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20">
-        <div className="w-full px-8 h-20 flex items-center">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20 min-h-[70px]">
+        <div className="w-full px-4 sm:px-6 lg:px-8 min-h-[70px] flex items-center justify-between gap-2 sm:gap-4">
           <motion.div 
-            className="flex items-center gap-4 group cursor-pointer mr-auto"
+            className="flex items-center group cursor-pointer flex-shrink-0"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <motion.div 
-              className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center transform group-hover:scale-110 transition-transform"
-              animate={{ 
-                boxShadow: [
-                  "0 0 20px rgba(59, 130, 246, 0.5)",
-                  "0 0 40px rgba(6, 182, 212, 0.8)",
-                  "0 0 20px rgba(59, 130, 246, 0.5)"
-                ]
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <span className="text-2xl font-bold">S</span>
-            </motion.div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+            <h1 className="text-base sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
               MUJ ACM SIGBED
             </h1>
           </motion.div>
 
-          <nav className="hidden lg:flex items-center gap-8 text-lg justify-center w-full">
+          <nav className="hidden lg:flex items-center gap-6 lg:gap-8 text-sm lg:text-base">
             {navigationItems.map((item, index) => {
               const isActive = item.href === "#/projects" || item.href === "#/projects/";
               return (
                 <motion.a
                   key={index}
                   href={item.href}
-                  className="text-gray-300 hover:text-white transition-colors relative group"
+                  className="text-gray-300 hover:text-white transition-colors relative group whitespace-nowrap"
                   whileHover={{ y: -2 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
@@ -510,17 +497,19 @@ export const Projects = (): JSX.Element => {
           </nav>
 
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden lg:block">
-            <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 ml-auto">
+            <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 text-sm lg:text-base px-6 lg:px-8">
               Join Us
             </Button>
           </motion.div>
 
           {/* Mobile Menu */}
-          <MobileMenu navigationItems={navigationItems} />
+          <div className="lg:hidden">
+            <MobileMenu navigationItems={navigationItems} />
+          </div>
         </div>
       </header>
 
-      <main className="pt-28 pb-24">
+      <main className="pt-[90px] pb-24">
         {/* Hero Section with Parallax */}
         <motion.div 
           className="container mx-auto px-8 mb-16"
@@ -617,7 +606,7 @@ export const Projects = (): JSX.Element => {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { number: 9, suffix: "+", label: "Projects Completed", icon: Rocket, clickable: true },
-              { number: 50, suffix: "+", label: "Team Members", icon: Target, clickable: false },
+              { number: 100, suffix: "+", label: "Team Members", icon: Target, clickable: false },
               { number: 5, suffix: "", label: "Ongoing Projects", icon: Bot, clickable: false }
             ].map((stat, index) => (
               <motion.div

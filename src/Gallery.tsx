@@ -38,10 +38,29 @@ const AutoPlayCoverFlow = ({ setCoverIndex, autoplayRef, length }: { setCoverInd
   return null;
 };
 
-const galleryImages = Array.from({ length: 18 }).map((_, i) => ({
-  src: `https://picsum.photos/seed/sigbed-gallery-${i}/800/600`,
-  alt: `Club gallery ${i + 1}`,
-}));
+// Gallery items: 13 photos + 2 videos from public/gallery folder
+const galleryItems = [
+  { src: "./public/gallery/IMG20231101022618.jpg", alt: "Event Photo 1", type: "image" },
+  { src: "./public/gallery/IMG20240120195659.jpg", alt: "Event Photo 2", type: "image" },
+  { src: "./public/gallery/IMG20240128161135.jpg", alt: "Event Photo 3", type: "image" },
+  { src: "./public/gallery/IMG20240130120713.jpg", alt: "Event Photo 4", type: "image" },
+  { src: "./public/gallery/IMG20240203162831.jpg", alt: "Event Photo 5", type: "image" },
+  { src: "./public/gallery/IMG20240203162909.jpg", alt: "Event Photo 6", type: "image" },
+  { src: "./public/gallery/IMG20240209190244.jpg", alt: "Event Photo 7", type: "image" },
+  { src: "./public/gallery/IMG20240313051816.jpg", alt: "Event Photo 8", type: "image" },
+  { src: "./public/gallery/IMG20241130120735.jpg", alt: "Event Photo 9", type: "image" },
+  { src: "./public/gallery/IMG_7437-Enhanced-NR.jpeg", alt: "Event Photo 10", type: "image" },
+  { src: "./public/gallery/Screenshot 2025-12-10 135938.png", alt: "Event Photo 11", type: "image" },
+  { src: "./public/gallery/Screenshot 2025-12-10 140005.png", alt: "Event Photo 12", type: "image" },
+  { src: "./public/gallery/IMG20231101022618.jpg", alt: "Event Photo 13", type: "image" },
+  { src: "./public/gallery/IMG_8483.MOV", alt: "Event Video 1", type: "video" },
+  { src: "./public/gallery/IMG_8512.MOV", alt: "Event Video 2", type: "video" },
+  { src: "./public/gallery/IMG_2222.jpg", alt: "Event Photo 14", type: "image" },
+  { src: "./public/gallery/IMG_2218.jpg", alt: "Event Photo 15", type: "image" },
+];
+
+// For coverflow and main display, use images only
+const galleryImages = galleryItems.filter(item => item.type === "image");
 
 export const Gallery = (): JSX.Element => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -72,7 +91,7 @@ export const Gallery = (): JSX.Element => {
     return () => window.removeEventListener("keydown", onKey);
   }, [lightboxOpen, next, prev]);
 
-  const filtered = useMemo(() => galleryImages.filter(g => category === "All" || g.category === category), [category]);
+  const filtered = useMemo(() => galleryImages, []);
 
   useEffect(() => {
     // trigger a brief swish animation when coverIndex changes
@@ -84,31 +103,28 @@ export const Gallery = (): JSX.Element => {
       <Particles />
 
       <motion.div
-        className="fixed top-20 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
+        className="fixed top-[70px] left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-500 origin-left z-[60]"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       />
 
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20">
-        <div className="w-full px-8 h-20 flex items-center">
-          <div className="flex items-center gap-4 group cursor-pointer mr-auto">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 to-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
-              <span className="text-2xl font-bold">S</span>
-            </div>
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
+      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg bg-black/50 border-b border-blue-400/20 min-h-[70px]">
+        <div className="w-full px-4 sm:px-6 lg:px-8 min-h-[70px] flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center group cursor-pointer flex-shrink-0">
+            <h1 className="text-base sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-400 to-white bg-clip-text text-transparent">
               MUJ ACM SIGBED
             </h1>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-8 text-lg justify-center w-full">
+          <nav className="hidden lg:flex items-center gap-6 lg:gap-8 text-sm lg:text-base">
             {navigationItems.map((item, index) => {
               const isActive = item.href === "#/gallery";
               return (
                 <a
                   key={index}
                   href={item.href}
-                  className="text-gray-300 hover:text-white transition-colors relative group"
+                  className="text-gray-300 hover:text-white transition-colors relative group whitespace-nowrap"
                 >
                   {item.label}
                   <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'}`} />
@@ -117,39 +133,27 @@ export const Gallery = (): JSX.Element => {
             })}
           </nav>
 
-          <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 ml-auto hidden lg:block">
+          <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 border-0 hidden lg:block text-sm lg:text-base px-6 lg:px-8">
             Join Us
           </Button>
 
-          <MobileMenu navigationItems={navigationItems} />
+          <div className="lg:hidden">
+            <MobileMenu navigationItems={navigationItems} />
+          </div>
         </div>
       </header>
 
-      <main className="pt-28 pb-24">
+      <main className="pt-[90px] pb-24">
         {/* Coverflow Hero */}
-        <section className="container mx-auto px-8 mb-12">
-          <div className="flex items-center justify-between mb-6">
-            
-            <div className="flex gap-2">
-              <button
-                className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white"
-                onClick={() => setCoverIndex((i) => (i - 1 + galleryImages.length) % galleryImages.length)}
-              >
-                ‹
-              </button>
-              <button
-                className="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white"
-                onClick={() => setCoverIndex((i) => (i + 1) % galleryImages.length)}
-              >
-                ›
-              </button>
-            </div>
+        <section className="container mx-auto px-8 mb-20">
+          <div className="text-center mb-8">
+            <h3 className="text-lg font-semibold text-cyan-400 mb-2">Featured Moments</h3>
+            <p className="text-gray-400 text-sm">Hover to explore • Click to view full size</p>
           </div>
+          
           <div
             ref={coverRef}
-            className="relative h-[420px] md:h-[560px] flex items-center justify-center overflow-hidden"
-            onMouseEnter={() => { autoplayRef.current = false; }}
-            onMouseLeave={() => { autoplayRef.current = true; }}
+            className="relative h-96 md:h-[500px] flex items-center justify-center overflow-hidden mb-8"
           >
             {/* swish effect when carousel advances */}
             <motion.div
@@ -160,31 +164,45 @@ export const Gallery = (): JSX.Element => {
               className="absolute inset-0 pointer-events-none"
               style={{ background: 'linear-gradient(90deg, rgba(6,182,212,0.0) 0%, rgba(6,182,212,0.12) 30%, rgba(59,130,246,0.06) 60%, rgba(6,182,212,0.0) 100%)', mixBlendMode: 'screen' }}
             />
-            {galleryImages.slice(coverIndex - 3, coverIndex + 4).map((img, localIdx) => {
-              const globalIdx = (coverIndex - 3 + localIdx + galleryImages.length * 10) % galleryImages.length;
+            {/* Infinite circular carousel */}
+            {[...Array(7)].map((_, localIdx) => {
+              const globalIdx = (coverIndex - 3 + localIdx + galleryImages.length * 100) % galleryImages.length;
+              const img = galleryImages[globalIdx];
               const offset = localIdx - 3;
+              const angleStep = (360 / 7);
+              const angle = offset * angleStep;
+              const radius = 280;
+              
+              // Calculate position using circle math
+              const radians = (angle * Math.PI) / 180;
+              const x = Math.sin(radians) * radius;
+              const y = -Math.cos(radians) * radius * 0.4;
+              
               const z = 10 - Math.abs(offset);
-              const rotateY = offset * -20;
-              const translateX = offset * 140;
-              const scale = 1 - Math.abs(offset) * 0.07;
+              const scale = 1 - Math.abs(offset) * 0.08;
+              const opacity = 1 - Math.abs(offset) * 0.15;
               const isCenter = offset === 0;
+              
               return (
                 <motion.div
-                  key={`${globalIdx}`}
+                  key={`${globalIdx}-${localIdx}`}
                   className="absolute will-change-transform cursor-pointer"
-                  style={{ perspective: 1000, zIndex: z }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0, x: translateX, rotateY, scale }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 16, mass: 0.8, delay: Math.abs(offset) * 0.01 }}
+                  style={{ perspective: 1200, zIndex: z }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity, x, y, scale }}
+                  transition={{ type: 'spring', stiffness: 150, damping: 20, mass: 1.2 }}
                   onClick={() => { setActiveIndex(globalIdx); setLightboxOpen(true); }}
-                  whileHover={{ y: isCenter ? -10 : -6 }}
+                  whileHover={{ y: y + (isCenter ? -15 : -8) }}
                 >
                   <div
-                    className="rounded-3xl overflow-hidden border border-cyan-400/30 shadow-2xl shadow-cyan-500/10 bg-black relative"
+                    className="rounded-2xl overflow-hidden border-2 border-cyan-400/40 shadow-2xl bg-black relative transition-all"
                     style={{
                       transformStyle: "preserve-3d",
-                      width: isCenter ? (window.innerWidth >= 768 ? 720 : 420) : 320,
-                      height: isCenter ? (window.innerWidth >= 768 ? 420 : 280) : 220,
+                      width: isCenter ? (window.innerWidth >= 768 ? 700 : 400) : 280,
+                      height: isCenter ? (window.innerWidth >= 768 ? 420 : 260) : 190,
+                      boxShadow: isCenter 
+                        ? '0 0 60px rgba(34,211,238,0.3), 0 0 120px rgba(59,130,246,0.15)' 
+                        : '0 0 20px rgba(34,211,238,0.1)',
                     }}
                   >
                     <motion.img
@@ -193,17 +211,17 @@ export const Gallery = (): JSX.Element => {
                       className="w-full h-full object-cover"
                       loading="lazy"
                       initial={false}
-                      whileHover={isCenter ? { scale: 1.02 } : { scale: 1.01 }}
-                      transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+                      whileHover={isCenter ? { scale: 1.025 } : { scale: 1.015 }}
+                      transition={{ type: 'spring', stiffness: 250, damping: 20 }}
                     />
                     {/* center pulse/glow when this is the focused card */}
                     {isCenter && (
                       <motion.div
-                        className="absolute inset-0 rounded-3xl pointer-events-none"
-                        initial={{ opacity: 0, scale: 0.98 }}
-                        animate={{ opacity: [0, 0.45, 0], scale: [1, 1.02, 1] }}
-                        transition={{ duration: 0.9, ease: 'easeOut' }}
-                        style={{ boxShadow: '0 0 40px rgba(56,189,248,0.18), 0 0 80px rgba(59,130,246,0.08)' }}
+                        className="absolute inset-0 rounded-2xl pointer-events-none"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: [0, 0.5, 0], scale: [1, 1.03, 1] }}
+                        transition={{ duration: 1.2, ease: 'easeInOut', repeat: Infinity }}
+                        style={{ boxShadow: '0 0 50px rgba(56,189,248,0.25), inset 0 0 40px rgba(34,211,238,0.1)' }}
                       />
                     )}
                   </div>
@@ -211,13 +229,42 @@ export const Gallery = (): JSX.Element => {
               );
             })}
           </div>
+
+          {/* Navigation controls */}
+          <div className="flex items-center justify-between gap-4">
+            <button
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 border border-cyan-400/50 text-cyan-400 font-semibold transition-all hover:scale-105 active:scale-95"
+              onClick={() => setCoverIndex((i) => (i - 1 + galleryImages.length) % galleryImages.length)}
+            >
+              ← Previous
+            </button>
+            <div className="flex gap-2">
+              {galleryImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCoverIndex(idx)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    idx === coverIndex 
+                      ? 'bg-cyan-400 w-8' 
+                      : 'bg-cyan-400/30 hover:bg-cyan-400/60'
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/20 to-blue-500/20 hover:from-cyan-500/30 hover:to-blue-500/30 border border-cyan-400/50 text-cyan-400 font-semibold transition-all hover:scale-105 active:scale-95"
+              onClick={() => setCoverIndex((i) => (i + 1) % galleryImages.length)}
+            >
+              Next →
+            </button>
+          </div>
         </section>
 
         {/* autoplay for coverflow */}
   <AutoPlayCoverFlow setCoverIndex={setCoverIndex} autoplayRef={autoplayRef} length={galleryImages.length} />
-        <section className="container mx-auto px-8 mb-10 text-center">
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
           <motion.h2
-            className="text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -225,16 +272,16 @@ export const Gallery = (): JSX.Element => {
             Gallery
           </motion.h2>
           <motion.p
-            className="text-gray-300 max-w-2xl mx-auto"
+            className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Club highlights and memories. Replace these images with your event photos.
+            Club highlights and memories.
           </motion.p>
         </section>
 
-        <section className="container mx-auto px-8">
+        <section className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 [column-fill:_balance]">{/* Masonry layout */}
             {filtered.map((img, i) => (
               <motion.div
@@ -254,9 +301,6 @@ export const Gallery = (): JSX.Element => {
                   loading="lazy"
                 />
                 <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/40 to-transparent" />
-                <div className="pointer-events-none absolute left-3 bottom-3 text-xs px-2 py-1 rounded bg-black/50 border border-white/10 text-white/90">
-                  {img.category}
-                </div>
               </motion.div>
             ))}
           </div>
